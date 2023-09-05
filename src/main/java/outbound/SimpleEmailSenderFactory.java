@@ -30,9 +30,7 @@ public class SimpleEmailSenderFactory implements EmailSenderFactory{
             case IMPERATIVE -> {
                 return Optional.of(imperativeEmailSender);
             }
-            default -> {
-                throw new IllegalArgumentException("Unsupported processing model");
-            }
+            default -> throw new IllegalArgumentException("Unsupported processing model");
         }
     }
 }
