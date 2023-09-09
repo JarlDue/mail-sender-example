@@ -11,7 +11,7 @@ import service.enums.ProcessingModel;
 import service.models.*;
 import service.models.EmailAddress;
 import service.models.ImmutableEmailAddress;
-import service.ports.EmailPort;
+import service.ports.MessageService;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ import java.util.List;
 public class EmailAddressSenderBehaviorTests {
 
     @Inject
-    EmailPort emailPort;
+    MessageService messageService;
 
     @Inject
     MockMailbox mockMailbox;
@@ -34,7 +34,7 @@ public class EmailAddressSenderBehaviorTests {
     @Test
     void whenAttemptingToSendValidImperativeEmail_thenEmailIsSent() {
         SendEmailRequest sendEmailRequest = createSendEmailRequest(ProcessingModel.IMPERATIVE);
-        emailPort.sendEmail(sendEmailRequest);
+        messageService.sendMessage(sendEmailRequest);
 
         List<Mail> mailList = mockMailbox.getMailsSentTo(emailAddressString);
 
@@ -47,7 +47,7 @@ public class EmailAddressSenderBehaviorTests {
     @Test
     void whenAttemptingToSendValidReactiveEmail_thenEmailIsSent() {
         SendEmailRequest sendEmailRequest = createSendEmailRequest(ProcessingModel.REACTIVE);
-        emailPort.sendEmail(sendEmailRequest);
+        messageService.sendMessage(sendEmailRequest);
 
         List<Mail> mailList = mockMailbox.getMailsSentTo(emailAddressString);
 
@@ -60,7 +60,7 @@ public class EmailAddressSenderBehaviorTests {
     @Test
     void whenAttemptingToSendValidAsyncEmail_thenEmailIsSent() {
         SendEmailRequest sendEmailRequest = createSendEmailRequest(ProcessingModel.ASYNC);
-        emailPort.sendEmail(sendEmailRequest);
+        messageService.sendMessage(sendEmailRequest);
     }
 
     private SendEmailRequest createSendEmailRequest(ProcessingModel processingModel) {

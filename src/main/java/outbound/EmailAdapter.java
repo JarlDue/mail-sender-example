@@ -2,10 +2,11 @@ package outbound;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import service.models.SendEmailRequest;
-import service.ports.EmailPort;
+import service.models.SendMessageRequest;
+import service.ports.MessageAdapter;
 
 @ApplicationScoped
-public class EmailAdapter implements EmailPort {
+public class EmailAdapter implements MessageAdapter {
 
     private final EmailSenderFactory emailSenderFactory;
 
@@ -14,7 +15,12 @@ public class EmailAdapter implements EmailPort {
     }
 
     @Override
-    public void sendEmail(SendEmailRequest sendEmailRequest) {
+    public void sendMessage(SendMessageRequest sendMessageRequest) {
+
+        if (!(sendMessageRequest instanceof SendEmailRequest sendEmailRequest)) {
+            throw new IllegalArgumentException("SendEmailRequest required");
+        }
+
         emailSenderFactory.createEmailSender(sendEmailRequest)
                 .ifPresent(emailSender -> emailSender.sendEmail(sendEmailRequest));
     }
